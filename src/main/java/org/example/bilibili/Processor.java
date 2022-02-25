@@ -1,6 +1,7 @@
 package org.example.bilibili;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,22 +42,28 @@ public class Processor {
      * @throws IOException          if an I/O error occurs
      * @throws InterruptedException timeout
      */
-    public void multipleFilesToMp4(String output, String... inputs) throws IOException, InterruptedException {
-        if (!output.endsWith(".mp4")) {
+    public void multipleFilesToMp4(Path output, Path... inputs) throws IOException, InterruptedException {
+        if (!output.toString().endsWith(".mp4")) {
             throw new IllegalArgumentException("output must be mp4 file");
         }
+        // make sure the directory exists
+        if (!output.getParent().toFile().exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            output.getParent().toFile().mkdirs();
+        }
+
         List<String> commands = new ArrayList<>();
         commands.add(FFMPEG);
         commands.add("-loglevel");
         commands.add("warning");
         commands.add("-y");
-        for (String input : inputs) {
+        for (Path input : inputs) {
             commands.add("-i");
-            commands.add(input);
+            commands.add(input.toString());
         }
         commands.add("-c");
         commands.add("copy");
-        commands.add(output);
+        commands.add(output.toString());
 
         Process process;
         ProcessBuilder processBuilder = new ProcessBuilder(commands);

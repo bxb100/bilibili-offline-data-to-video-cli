@@ -22,9 +22,9 @@ class ProcessorTest extends IOUtilTest {
         OffLineFile offLineFile = IOUtil.readSingleDir(subPath.toString());
         Path outputPath = Paths.get(tempDir, offLineFile.getPartTitle() + ".mp4");
         System.out.println(outputPath);
-        Processor.multipleFilesToMp4(outputPath.toString(),
-                offLineFile.getVideoPath().toString(),
-                offLineFile.getAudioPath().toString()
+        Processor.multipleFilesToMp4(outputPath,
+                offLineFile.getVideoPath(),
+                offLineFile.getAudioPath()
         );
         assertTrue(outputPath.toFile().exists());
     }

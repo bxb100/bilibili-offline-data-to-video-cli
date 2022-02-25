@@ -1,5 +1,6 @@
 package org.example.bilibili;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -43,19 +44,18 @@ public class Main implements Runnable {
                     IOUtil.iterateReadDir(Paths.get(input));
 
             for (OffLineFile offLineFile : offLineFiles) {
-                String outputFile = Paths.get(
+                Path outputPath = Paths.get(
                         output,
                         offLineFile.getVideoTitle(),
-                        offLineFile.getPartTitle(),
-                        ".mp4"
-                ).toString();
+                        offLineFile.getPartTitle() + ".mp4"
+                );
                 Processor.multipleFilesToMp4(
-                        outputFile,
-                        offLineFile.getVideoPath().toString(),
-                        offLineFile.getAudioPath().toString()
+                        outputPath,
+                        offLineFile.getVideoPath(),
+                        offLineFile.getAudioPath()
                 );
 
-                System.out.printf((bundle.getString("success")) + "%n", outputFile);
+                System.out.printf((bundle.getString("success")) + "%n", outputPath);
             }
             System.exit(0);
 
